@@ -1,0 +1,55 @@
+.img-holder
+      img.animate(src="/img/ads/perawat-iklan-layanan.jpg",style="width:100%")
+div
+  h2.ribbon.flat2-color Online Community
+  .community
+    .social
+      ul#socmed
+        li
+          a.fb(href='https://www.facebook.com/kabarwonogiricom')
+            i.fa.fa-facebook.fa-lg
+        li
+          a.twitter(href='#')
+            i.fa.fa-twitter.fa-lg
+        li
+          a.gplus(href='#')
+            i.fa.fa-google-plus.fa-lg
+        li
+          a.instagram(href='#')
+            i.fa.fa-instagram.fa-lg
+        li
+          a.pinterest(href='#')
+            i.fa.fa-pinterest.fa-lg
+        li
+          a.linkedin(href='#')
+            i.fa.fa-linkedin.fa-lg
+      .fblike
+        .fb-like(data-href='https://www.facebook.com/kabarwonogiricom', data-width='200', data-layout='standard', data-action='like', data-show-faces='true', data-share='true')
+      p Silakan kirim informasi baik berita atau foto ke:
+        p
+          a(href="tel:+6281229872434") +6281229872434
+        p
+          a(href="mailto:redaksikw@gmail.com") redaksikw@gmail.com
+#popular-post
+  h2.ribbon POPULAR POSTS
+  ul
+    if(typeof(heads.populars) !== 'undefined')
+      - var i=1
+      each pop in heads.populars
+        li.row
+          .col-md-5
+            a(href='/'+pop.url+'/')
+              .img-holder
+                if(pop.image)
+                  img.animate(src='/img/thumbs/'+pop.image.image,alt=pop.alt)
+          .col-md-7
+            .post-title
+              a(href='/'+pop.url+'/')= pop.title
+            .post-meta
+              a(href='/'+pop.url+'/') #{moment(pop.date).format('lll')}
+          if i%5==0
+            .img-holder
+              img.animate(src="/img/ads.png",style="width:100%")
+        -i++
+.img-holder
+      img.animate(src="/img/ads.png",style="width:100%")

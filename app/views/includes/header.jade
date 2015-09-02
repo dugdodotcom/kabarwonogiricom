@@ -1,0 +1,62 @@
+#header
+  .container
+    .row
+      .col-md-5
+        a.pull-left(href='/')
+          img(src='/img/kabar-wonogiri.png',height="70")
+        #title.pull-left
+          a(href='/')
+            h1 
+              | KabarWonogiri
+              span .com
+            h5 Jujur, opo onone
+        .clearfix
+      .col-md-7(style="height:70px")
+        #search-post.col-md-7.pull-right
+          form.form-inline(action='/search',method='post')
+            input.form-control(type='text',name='search',placeholder='Search...')
+            button.btn.btn-default(type='submit')
+              i.fa.fa-search
+        .clearfix
+        ul.nav.nav-tabs#form-login.pull-right
+          li
+            a(href="/") Home
+          li
+            a(href="/info/about-us") About Us
+          li
+            a(href="/info/contact-us") Contact Us
+          if (req.isAuthenticated())
+            li
+              a(href="/signout", title="logout") Logout
+          else
+            li
+              a(href="/signin") Masuk
+            li
+              a(href="/signup") Daftar
+  nav.navbar.navbar-invert(role="navigation")
+    .container
+      .navbar-header
+          button.navbar-toggle(type="button",data-toggle="collapse",data-target="#navbar-head")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        .collapse.navbar-collapse#navbar-head
+          ul.nav.navbar-nav
+            li(class=id=='home'?'active':'')
+              a.home(href="/",style="font-size: 12pt;")
+                i.fa.fa-home.fa-2x
+            each category in heads.categories
+              li.dropdown(class=id==category.urlcategory?'active':'')
+                a(href='/category/'+category.urlcategory) 
+                  | !{category.namecategory}
+                  if(category.subs.length !== 0)
+                    b.caret
+                if(category.subs.length !== 0)
+                  ul.dropdown-menu
+                    li.sub-left
+                      ul
+                        each categorysub in category.subs
+                          li
+                            a(href='/category/'+categorysub.urlcategory) !{categorysub.namecategory}
+      

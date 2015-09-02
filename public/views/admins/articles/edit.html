@@ -1,0 +1,97 @@
+<section data-ng-controller="ArticlesAdminController" data-ng-init="findOne()" class="textangular">
+	<h1>{{form}} {{mode}}</h1>
+	<form class="form-horizontal" role="form" data-ng-submit="update()">
+		<div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Title</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputEmail3" placeholder="Title" ng-change="urlchange()" ng-model="articlesadmin.title" required>
+			</div>
+		</div>
+    <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Url</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputEmail3" placeholder="Category Url" ng-model="articlesadmin.url">
+			</div>
+		</div>
+    <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">keyword</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputEmail3" placeholder="Keyword" ng-model="articlesadmin.keyword">
+			</div>
+		</div>
+    <div class="form-group">
+			<label for="inputPassword3" class="col-sm-2 control-label">Image</label>
+			<div class="col-sm-10">
+        <input type="text" ng-model="alt" class="form-control" placeholder="alt">
+        <input type="text" ng-model="caption" class="form-control" placeholder="caption">
+				<input type="file" name="file" accept="image/*" ng-file-select="onFileSelect($files)"> - 760 x 430
+				<div class="progress progress-striped active" ng-hide="progress==0">
+					<div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
+						<span class="sr-only">{{progress}}% Complete</span>
+					</div>
+				</div>
+				<div ng-show="image">
+          <input type="hidden" ng-model="articlesadmin.image" /> 
+					<img ng-show="image" ng-src="/img/thumbs/{{image}}" />
+				</div>
+			</div>
+		</div>
+    <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Custom image width</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputEmail3" placeholder="Custom image width" ng-model="articlesadmin.customwidth" />
+			</div>
+		</div>
+    <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Content</label>
+			<div class="col-sm-10" class="textangular">
+				<div text-angular text-angular-name="demo1" ng-model="articlesadmin.content"></div>
+			</div>
+		</div>
+    <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Limit</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" id="inputEmail3" placeholder="Limit" ng-model="articlesadmin.limit"></textarea>
+			</div>
+		</div>
+    <div class="form-group">
+			<label for="inputEmail3" class="col-sm-2 control-label">Description</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" id="inputEmail3" placeholder="Description" ng-model="articlesadmin.description"></textarea>
+			</div>
+		</div>
+    <section ng-init="tag()">
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">Tags</label>
+        <div class="col-sm-10">
+          <p ng-repeat="tag in tags">
+            <label>
+              <input checklist-model="articlesadmin.tags" checklist-value="tag._id" type="checkbox"> {{tag.name}}
+            </label>
+          </p>
+          <br />
+          <input type="text" ng-model="taginput" />
+          <button type="button" class="btn btn-default" ng-click="addTag()">Add Tag</button>
+        </div>
+      </div>
+    </section>
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-2 control-label">Category</label>
+      <select  ng-model="articlesadmin.category" ng-change="subcat()">
+          <option ng-repeat="cat in categories" value="{{cat._id}}">{{cat.namecategory}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-2 control-label">Sub</label>
+      <select  ng-model="articlesadmin.sub">
+          <option ng-repeat="sub in subcategories" value="{{sub._id}}">{{sub.namecategory}}</option>
+      </select>
+    </div>
+		<div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </div>
+		</div>
+	</form>
+</section>

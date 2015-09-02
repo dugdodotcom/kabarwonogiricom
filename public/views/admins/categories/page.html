@@ -1,0 +1,30 @@
+<section data-ng-controller="CategoriesAdminController" data-ng-init="find()">
+  <h1><a href="#!/admin/{{mode}}/create">Create One</a></h1>
+    <table class="table table-striped">
+        <thead>
+          <tr>        
+            <th>Category Name</th>
+            <th>Sub Category</th>
+            <th>action</th>
+          </tr>
+        </thead>
+    <tbody>
+        <tr data-ng-repeat="category in categoriesadmins   | orderBy:'-created'">
+          <td>{{category.namecategory}}</td>
+          <td><ul>
+              <li data-ng-repeat="subcategory in category.subs">
+                  {{subcategory.namecategory}}
+              </li>
+            </ul>
+          </td>
+          <td><a class="btn" href="#!/admin/{{mode}}/edit/{{category._id}}">
+        	<i class="fa fa-edit"></i>
+        </a>
+        <a class="btn" data-ng-click="remove(category._id,$index)">
+            <i class="fa fa-trash-o"></i>
+        </a>
+          </td>
+        </tr>      
+    </tbody>
+  </table>
+</section>

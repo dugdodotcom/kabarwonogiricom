@@ -1,0 +1,30 @@
+<section data-ng-controller="HomepagesAdminController" data-ng-init="find()">
+  <h1>Slide</h1>
+  <h4><a href="#!/homepage/slides/create">Create One</a></h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>        
+        <th>Article Title</th>
+        <th>image</th>
+        <th>Category</th>
+        <th>Sub</th>
+        <th>action</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="article in homepagesadmin.slides   | orderBy:'-created'">
+          <td>{{article.title}}</td>
+          <td><img ng-src="/img/thumbs/{{article.image.image}}" /></td>
+          <td>{{article.category.namecategory}}</td>
+          <td>{{article.sub.namecategory}}</td>
+          <td><form ng-submit="slide(article._id,article.slide,$index)"><button type="submit" class="btn btn-success" ng-show="article.slide==1">Slide</button><button type="submit" class="btn btn-warning" ng-show="article.slide==0">Unslide</button></form><a class="btn" href="#!/admin/{{mode}}/edit/{{article._id}}">
+          <i class="fa fa-edit"></i>
+        </a>
+        <a class="btn" data-ng-click="remove(article._id,$index)">
+            <i class="fa fa-trash-o"></i>
+        </a>
+          </td>
+        </tr>      
+    </tbody>
+  </table>
+</section>

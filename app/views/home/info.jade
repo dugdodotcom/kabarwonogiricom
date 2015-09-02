@@ -1,0 +1,12 @@
+extends ../layouts/default
+block javascript
+  script(type='text/javascript', src='http://w.sharethis.com/button/buttons.js')
+  script.
+    stLight.options({publisher: "ur-d825cc30-89db-ff78-fdff-dd3fb1009927", doNotHash: true, doNotCopy: false, hashAddressBar: true});
+block content
+  .col-md-8
+    #info
+      h1 !{content.title}
+      p !{content.content}
+  .col-md-4
+    include ../includes/right

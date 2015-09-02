@@ -1,0 +1,29 @@
+<section data-ng-controller="ArticlesAdminController" data-ng-init="find()">
+  <h1><a href="#!/admin/{{mode}}/create">Create One</a></h1>
+    <table class="table table-striped">
+        <thead>
+          <tr>        
+            <th>Article Title</th>
+            <th>image</th>
+            <th>Category</th>
+            <th>Sub</th>
+            <th>action</th>
+          </tr>
+        </thead>
+    <tbody>
+        <tr data-ng-repeat="article in articlesadmins   | orderBy:'-created'">
+          <td>{{article.title}}</td>
+          <td><img ng-src="/img/thumbs/{{article.image.image}}" height="20" /></td>
+          <td>{{article.category.namecategory}}</td>
+          <td>{{article.sub.namecategory}}</td>
+          <td><form class="pull-left" ng-submit="slide(article._id,article.slide,$index)"><button type="submit" class="btn btn-success" ng-show="article.slide==1">Slide</button><button type="submit" class="btn btn-warning" ng-show="article.slide==0">Unslide</button></form> <form ng-submit="publish(article._id,article.publish,$index)"><button type="submit" class="btn btn-success" ng-show="article.publish==1">Publish</button><button type="submit" class="btn btn-warning" ng-show="article.publish==0">Unpublish</button></form><a class="btn" href="#!/admin/{{mode}}/edit/{{article._id}}">
+        	<i class="fa fa-edit"></i>
+        </a>
+        <a class="btn" data-ng-click="remove(article._id,$index)">
+            <i class="fa fa-trash-o"></i>
+        </a>
+          </td>
+        </tr>      
+    </tbody>
+  </table>
+</section>

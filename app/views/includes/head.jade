@@ -1,0 +1,28 @@
+head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+  meta(name='viewport', content='width=device-width,initial-scale=1')
+
+  title=title?title:'kabar wonogiri, kabar, berita, info, wonogiri'+' - kabarwonogiri.com'
+  meta(http-equiv='Content-type', content='text/html;charset=UTF-8')
+  meta(name="keywords", content=keyword?keyword:'info, kabar, berita, wonogiri, solo')
+  meta(name="description", content=description?description:"Kabar berita di wonogiri. Jujur, opo onone.")
+
+  link(href=req.protocol + '://' + req.get('host') +'/img/icons/favicon.ico', rel='shortcut icon', type='image/x-icon')
+  
+  meta(property='fb:app_id', content='APP_ID')
+  meta(property='og:title', content=title?title:'kabar, berita, info, wonogiri'+' - kabarwonogiri.com')
+  meta(property='og:description', content=description?description:"Kabar berita di wonogiri. Jujur, opo onone.")
+  meta(property='og:type', content='website')
+  meta(property='og:url', content=req.protocol + '://' + req.get('host') + req.originalUrl)
+  meta(property='og:image', content=req.protocol + '://' + req.get('host') +'/img/'+(detail&&detail.image.image?'gallerythumbs/'+detail.image.image:'kabar-wonogiri.png'))
+  meta(property='og:site_name', content='kabarwonogiri.com')
+  meta(property='fb:admins', content='APP_ADMIN')
+  link(rel='stylesheet', href='/css/common.css')
+  script(type='text/javascript', src='/lib/jquery/dist/jquery.min.js')
+  script(type='text/javascript', src='/lib/bootstrap/dist/js/bootstrap.min.js')
+  //script(type='text/javascript', src='/lib/lazyload/jquery.lazyload.min.js')
+  block javascript
+  
+  //if lt IE 9
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')

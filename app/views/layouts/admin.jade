@@ -1,0 +1,17 @@
+doctype html
+html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.facebook.com/2008/fbml', itemscope='itemscope', itemtype='http://schema.org/Product')
+  include ../includes/headadmin
+  body(style="padding-top:50px")
+    .modal.fade.bs-example-modal-lg#myModal(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4.modal-title Editor
+          .modal-body(ui-view='modal')
+    .navbar.navbar-inverse.navbar-fixed-top(data-ng-include="'/views/admins/headeradmin.html'", data-role="navigation")
+    section.content
+      section(ui-view)
+       script(type="text/javascript").
+        window.user = !{user};
+    include ../includes/footadmin

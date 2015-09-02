@@ -1,0 +1,153 @@
+extends ../layouts/default
+block javascript
+  script(type='text/javascript', src='http://w.sharethis.com/button/buttons.js')
+  script.
+    stLight.options({publisher: "ur-d825cc30-89db-ff78-fdff-dd3fb1009927", doNotHash: true, doNotCopy: false, hashAddressBar: true});
+block content
+  .modal.fade.bs-example-modal-lg#myModal(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true',style="margin-top:20px;")
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4.modal-title Editor
+          .modal-body
+  .col-md-8
+    #detail
+      .bread
+        a.cat(href=detail.category.urlcategory) #{detail.category.namecategory}
+        if(detail.sub!=null)
+          a.sub.flat1-color(href=detail.sub.urlcategory) #{detail.sub.namecategory}
+        time(datetime=moment(detail.created, "YYYY-MM-DD"),pubdate"") !{moment(detail.created).format('lll')}
+        
+    
+      h1= detail.title
+      p.panel-post
+        if(detail.author!=null)
+          | By 
+          a(href="https://plus.google.com/+AlfadoPujaKusuma?rel=author",rel="author") Alfado Puja Kusuma
+        |  /
+        | !{detail.comment} 
+        |  /
+        | !{detail.view} Views
+        |  
+        span#sharer.pull-right
+          span.st_facebook_large(displaytext='Facebook')
+          span.st_twitter_large(displaytext='Tweet')
+          span.st_linkedin_large(displaytext='LinkedIn')
+          span.st_pinterest_large(displaytext='Pinterest')
+          span.st_plusone_large(displaytext='Google +1')
+      .img-holder
+        a(href=req.protocol + '://' + req.get('host') +"/img/huge/"+detail.image.image)
+          img.animate(src=req.protocol + '://' + req.get('host') +"/img/huge/"+detail.image.image,alt=detail.image.alt,style="width:"+(detail.customwidth?detail.customwidth:'100')+"%")
+      if(detail.image.caption&&detail.image.caption!=''&&typeof(detail.image.caption) !== 'undefined'&&detail.image.caption!='undefined')
+        p.caption !{detail.image.caption}
+      .content-post !{detail.content}
+      .single-meta-bottom.tags
+        | Article Tags: 
+        -var i=0
+        each tags in detail.tags
+          if(i!=0)
+            | , 
+          a(href='/tag/'+tags.value+'/')= tags.name
+          -i++
+      .fb-comments(data-href=req.protocol + '://' + req.get('host') + req.originalUrl, data-width='300', data-numposts='5', data-colorscheme='light')
+      //-
+        h3#comment 
+          span.count= detail.comment
+          |  COMMENTS
+        .comment
+          form(action='/postcomment/'+detail.url,method='post')
+            input(type="hidden",name="url",value=req.protocol + '://' + req.get('host') + req.originalUrl)
+            input(type="hidden",name="comment")
+            textarea.form-control#respond(name='message',placeholder="Isi komentar anda.")
+            .checkbox
+              .pull-left
+                label.pull-left
+                  input(type='checkbox',name='socialshare[]',value='1',checked)
+                  i.fa.fa-facebook
+                label.pull-left(style="margin-left: 37px;")
+                  input(type='checkbox',name='socialshare[]',value='2',checked)
+                  i.fa.fa-twitter
+              .pull-right
+                span.cancel
+                  a.cancela(href="#") Batal Balas
+                button.btn.btn-primary(type="submit") COMMENT
+        ul.comment-list
+          each comment in detail.comments
+            li
+              .row(id='comment-'+comment._id)
+                .comment-content.col-md-10
+                  p.comment-name !{comment.user?comment.user.name:'removed user'}
+                  p.date
+                    | #{moment(comment.created).format('lll')}, 
+                    span
+                      a.reply(href="reply/"+comment._id+"/#respond",_id=comment._id,no=comment.id) Balas
+                  p.content= comment.message
+                .profile-picture.col-md-2 &nbsp;
+                  .hexagon.hexagon2
+                    .hexagon-in1
+                      .hexagon-in2(style=comment.user&&comment.user.picture?"background-image:url(/img/profile/"+comment.user.picture+".jpg)":"")
+              if(typeof(comment.comments) !== 'undefined')
+                ul(no=comment._id)
+                  each comments in comment.comments
+                    li
+                      .row(id='comment-'+comments._id)
+                        .comment-content.col-md-10
+                          p.comment-name !{comments.user&&comments.user.name?comments.user.name:'removed user'}
+                          p.date
+                            | #{moment(comments.created).format('lll')}, 
+                            span
+                              a.reply(href="reply/"+comments._id+"/#respond",_id=comment._id,no=comments.id) Balas
+                          p.content= comments.message
+                        .profile-picture.col-md-2 &nbsp;
+                          .hexagon.hexagon2
+                            .hexagon-in1
+                              .hexagon-in2(style=comments.user&&comments.user.picture?"background:url(/img/profile/"+comments.user.picture+".jpg) no-repeat center center":"")
+        
+  .col-md-4
+    include ../includes/right
+  script.
+    $('form').submit(function(){
+      $.post('/check',{url:'#{req.protocol + '://' + req.get('host') + req.originalUrl}',message:$('[name="message"]').val(),article:'#{detail._id}',comment:$('[name="comment"]').val()},function(dat){
+        if(dat.status==1){
+          $('#myModal').modal('toggle');
+          $('.modal-title').html(dat.title);
+          $('.modal-body').html(dat.content);
+        }else{
+          var ids=$('input[name="comment"]').val();
+          if(ids==''){
+              $(dat.content).appendTo('ul.comment-list').focus();
+          }else{
+              $(dat.content).appendTo('ul[no="'+ids+'"]').focus();
+          }
+          $('span.count').html(parseInt($('span.count').html())+1);
+          $('.comment-list').before($('.comment'));
+          $('input[name="comment"]').val('');
+          $('#respond').val('')
+        }
+      });
+      return false;
+    });
+    $('ul.comment-list').on('click','a.reply',function(){
+      $('#comment-'+$(this).attr('no')).after($('.comment'));
+      $('input[name="comment"]').val($(this).attr('_id'));
+      $('#respond').focus();
+      return false;
+    });
+    $('ul.comment-list').on('click','a.cancela',function(){
+      $('.comment-list').before($('.comment'));
+      $('input[name="comment"]').val('');
+      $('#respond').val('');
+      return false;
+    });
+    $(window).load(function(){
+      fbcomments();
+    })
+    $(window).resize(function() {
+        fbcomments();
+    })
+    function fbcomments(){
+        var deswidth=$('.single-meta-bottom.tags').width();
+        $('.fb-comments').attr('data-width',deswidth);
+        $('.fb-comments iframe').css('width',deswidth);
+    }

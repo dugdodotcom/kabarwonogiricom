@@ -1,0 +1,33 @@
+extends ../layouts/default
+block javascript
+  script(type='text/javascript', src='http://w.sharethis.com/button/buttons.js')
+  script.
+    stLight.options({publisher: "ur-d825cc30-89db-ff78-fdff-dd3fb1009927", doNotHash: true, doNotCopy: false, hashAddressBar: true});
+block content
+  .col-md-8
+    #category
+      .bread
+        a.mark Category: 
+        a.cat.flat2-color(href=content.category.urlcategory) #{content.category.namecategory}
+        if(content.sub!=null)
+          a.sub.flat1-color(href=content.sub.urlcategory) #{content.sub.namecategory}
+      ul.category-list
+        each articles in content.content
+          li.row
+            .col-md-5
+              a(href='/'+articles.url+'/')
+                .img-holder
+                  img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(articles.image!=null?articles.image.image:''),alt=articles.alt)
+            .col-md-7
+              h2
+                a.list-post-content(href='/'+articles.url+'/')= articles.title
+              p.post-excerpt !{articles.limit}
+              p.panel-post
+                | !{articles.comment} Comments
+                |  / 
+                | !{articles.view} Views
+                |  / 
+                | #{moment(articles.created).format('lll')}
+              
+  .col-md-4
+    include ../includes/right

@@ -1,0 +1,363 @@
+extends ../layouts/default
+
+block javascript
+  script(type='text/javascript', src='/lib/masonry/dist/masonry.pkgd.min.js')
+  script(type='text/javascript', src='/lib/imagesloaded/imagesloaded.js')
+  
+block content
+  .col-md-8
+    #slido
+      #slide.carousel.slide(data-ride="carousel")
+        .carousel-inner
+          - var i=1
+          each slide in content.slides
+            .item(class=i === 1 ? "active" : "")
+              img(alt=slide.alt,src=req.protocol + '://' + req.get('host') +"/img/slide/"+slide.image.image)
+              .carousel-caption
+                h3
+                  a(href='/'+slide.url+'/')= slide.title
+                p= slide.limit
+            - i++
+        .coor-slide
+          a.left(href='#slide', data-slide='prev')
+            i.fa.fa-angle-left
+          a.right(href='#slide', data-slide='next')
+            i.fa.fa-angle-right
+        ol.carousel-indicators.row
+          - var s=0
+          each slide in content.slides
+            li.col-sm-2.col-xs-6(data-target="#slide",class=s === 0 ? "active" : "",data-slide-to=s )
+              .img-holder
+                img.animate(alt=slide.alt,src=req.protocol + '://' + req.get('host') +"/img/thumbs/"+slide.image.image)
+              p
+                a(href='/'+slide.url+'/',onclick="goTo('/"+slide.url+"/')") !{slide.title}
+              -s++
+    h2.ribbon.flat7-color KABAR
+    .news-box
+      .list-box
+        .box-inside.row
+          .col-sm-6.box-left
+            .img-holder
+              a.post-title(href='/'+content.news1.url+'/')
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(content.news1.image!=null?content.news1.image.image:''),alt=content.news1.alt)
+            .filler
+              h2
+                a.post-title(href='/'+content.news1.url+'/')= content.news1.title
+              .meta-readmore
+                a.pull-left(href='/'+content.news1.url+'/')
+                  i.fa.fa-comments
+                  |  #{content.news1.comment}
+                p.pull-left #{moment(content.news1.created).format('lll')}
+              .excerpt
+                p #{content.news1.limit}...
+              
+                
+          .col-sm-6.box-right
+            ul.short
+              each articles in content.news
+                li
+                  .row
+                    .col-xs-3
+                      a(href='/'+articles.url+'/')
+                        .img-holder
+                          if(articles.image)
+                            img.animate(src=req.protocol + '://' + req.get('host') +'/img/gallerythumbs/'+articles.image.image,alt=articles.alt)
+                    .col-xs-9
+                      .post-title
+                        h3
+                          a(href='/'+articles.url+'/')= articles.title
+                      .post-meta
+                        a(href='/'+articles.url+'/')  #{moment(articles.created).format('lll')}
+        ul.long#ms-containers.row
+          each articles in content.news2
+            li.col-sm-6.ms-item
+              h5
+                a.post-title(href='/'+articles.url+'/')= articles.title
+              .meta-date
+                a.pull-left(href='/'+articles.url+'/')
+                  i.fa.fa-comments
+                  |  !{articles.comment}&nbsp;
+                p.pull-left #{moment(articles.created).format('lll')}
+              a.img(href='/'+articles.url+'/')
+                .img-holder
+                  img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(articles.image!=null?articles.image.image:''),alt=articles.alt)
+              .excerpt
+                p !{articles.limit}...
+              .meta-readmore
+                a.pull-right(href='/'+articles.url+'/') Read More
+  .col-sm-4.col-xs-12
+    .img-holder
+      img.animate(src=req.protocol + '://' + req.get('host') +"/img/ads/perawat-iklan-layanan.jpg")
+    h2.ribbon.flat2-color Online Community
+    .community
+      .social
+        ul#socmed
+          li
+            a.fb(href='https://www.facebook.com/kabarwonogiricom')
+              i.fa.fa-facebook.fa-lg
+          li
+            a.twitter(href='#')
+              i.fa.fa-twitter.fa-lg
+          li
+            a.gplus(href='#')
+              i.fa.fa-google-plus.fa-lg
+          li
+            a.instagram(href='#')
+              i.fa.fa-instagram.fa-lg
+          li
+            a.pinterest(href='#')
+              i.fa.fa-pinterest.fa-lg
+          li
+            a.linkedin(href='#')
+              i.fa.fa-linkedin.fa-lg
+        .fblike
+          .fb-like(data-href='https://www.facebook.com/kabarwonogiricom', data-width='200', data-layout='standard', data-action='like', data-show-faces='true', data-share='true')
+        p Silakan kirim informasi baik berita atau foto ke:
+        p
+          a(href="https://plus.google.com/+AlfadoPujaKusuma?rel=author") Alfado Puja Kusuma
+        p
+          a(href="tel:+6281229872434") +6281229872434
+        p
+          a(href="mailto:redaksikw@gmail.com") redaksikw@gmail.com
+    .latest-news
+      h2.ribbon.flat5-color INFO WARGA
+      ul
+        each kabare in content.kabare
+          li
+            a.post-title(href='/'+kabare.url+'/')
+              .img-holder
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(kabare.image!=null?kabare.image.image:''),alt=kabare.alt)
+                h5= kabare.title
+            .excerpt
+              p #{kabare.limit}...
+            .meta-readmore
+              a.pull-left(href='/'+kabare.url+'/')
+                i.fa.fa-comments
+                |  #{kabare.comment}
+              p.pull-left #{moment(kabare.created).format('lll')}
+              a.pull-right(href='/'+kabare.url+'/') Read More
+    .latest-news
+      h2.ribbon.flat4-color BORO 
+      ul
+        li
+          a.post-title(href='/'+content.boro.url+'/')
+            .img-holder
+              img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(content.boro.image!=null?content.boro.image.image:''),alt=content.boro.alt)
+              h5= content.boro.title
+          .excerpt
+            p #{content.boro.limit}...
+          .meta-readmore
+            a.pull-left(href='/'+content.boro.url+'/')
+              i.fa.fa-comments
+              |  #{content.boro.comment}
+            p.pull-left #{moment(content.boro.created).format('lll')}
+            a.pull-right(href='/'+content.boro.url+'/') Read More
+    .latest-news
+      h2.ribbon.flat1-color GAUL 
+      ul
+        each articles in content.gaul
+          li
+            a.post-title(href='/'+articles.url+'/')
+              .img-holder
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(articles.image!=null?articles.image.image:''),alt=articles.alt)
+                h5= articles.title
+            .excerpt
+              p #{articles.limit}...
+            .meta-readmore
+              a.pull-left(href='/'+articles.url+'/')
+                i.fa.fa-comments
+                |  #{articles.comment}
+              p.pull-left #{moment(articles.created).format('lll')}
+              a.pull-right(href='/'+articles.url+'/') Read More
+    .latest-news
+      h2.ribbon.flat3-color ASAL USUL 
+      ul
+        each articles in content.asalusul
+          li
+            a.post-title(href='/'+articles.url+'/')
+              .img-holder
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(articles.image!=null?articles.image.image:''),alt=articles.alt)
+                h5= articles.title
+            .excerpt
+              p #{articles.limit}...
+            .meta-readmore
+              a.pull-left(href='/'+articles.url+'/')
+                i.fa.fa-comments
+                |  #{articles.comment}
+              p.pull-left #{moment(articles.created).format('lll')}
+              a.pull-right(href='/'+articles.url+'/') Read More
+  //-
+    .col-sm-8.col-xs-12.ms-item
+      h2.ribbon.flat7-color KABAR
+      .news-box
+        .list-box.row
+          .col-sm-6.box-left
+            .img-holder
+              a.post-title(href='/'+content.news1.url+'/')
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(content.news1.image!=null?content.news1.image.image:''),alt=content.news1.alt)
+            .filler
+              a.post-title(href='/'+content.news1.url+'/')
+                h2= content.news1.title
+              .meta-readmore
+                a.pull-left(href='/'+content.news1.url+'/')
+                  i.fa.fa-comments
+                  |  #{content.news1.comment}
+                p.pull-left #{moment(content.news1.created).format('lll')}
+              .excerpt
+                p #{content.news1.limit}...
+              
+                
+          .col-sm-6
+            ul
+              each articles in content.news
+                li
+                  .row
+                    .col-xs-3
+                      a(href='/'+articles.url+'/')
+                        .img-holder
+                          if(articles.image)
+                            img.animate(src=req.protocol + '://' + req.get('host') +'/img/gallerythumbs/'+articles.image.image,alt=articles.alt)
+                    .col-xs-9
+                      .post-title
+                        h3
+                          a(href='/'+articles.url+'/')= articles.title
+                      .post-meta
+                        a(href='/'+articles.url+'/') #{moment(articles.date).format('lll')}
+  //-
+    .col-sm-4.col-xs-12.ms-item
+      .latest-news
+        h2.ribbon.flat2-color INFO WARGA 
+        ul
+          each articles in content.kabare
+            li
+              a.post-title(href='/'+articles.url+'/')
+                .img-holder
+                  img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(articles.image!=null?articles.image.image:''),alt=articles.alt)
+                  h5= articles.title
+              .excerpt
+                p #{articles.limit}...
+              .meta-readmore
+                a.pull-left(href='/'+articles.url+'/')
+                  i.fa.fa-comments
+                  |  #{articles.comment}
+                p.pull-left #{moment(articles.created).format('lll')}
+                a.pull-right(href='/'+articles.url+'/') Read More
+  //-
+    .col-sm-4.col-xs-12.ms-item
+      .latest-news
+        h2.ribbon.flat3-color KABAR
+        ul
+          each articles in content.news
+            li
+              a.post-title(href='/'+articles.url+'/')
+                .img-holder
+                  img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(articles.image!=null?articles.image.image:''),alt=articles.alt)
+                  h5= articles.title
+              .excerpt
+                p #{articles.limit}...
+              .meta-readmore
+                a.pull-left(href='/'+articles.url+'/')
+                  i.fa.fa-comments
+                  |  #{articles.comment}
+                p.pull-left #{moment(articles.created).format('lll')}
+                a.pull-right(href='/'+articles.url+'/') Read More
+  //-
+    .col-sm-4.col-xs-12.ms-item
+      .latest-news
+        h2.ribbon.flat1-color WONOGIREN 
+        ul
+          li
+            a.post-title(href='/'+content.foto.url+'/')
+              .img-holder
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(content.foto.image!=null?content.foto.image.image:''),alt=content.foto.alt)
+                h5= content.foto.title
+            .excerpt
+              p #{content.foto.limit}...
+            .meta-readmore
+              a.pull-left(href='/'+content.foto.url+'/')
+                i.fa.fa-comments
+                |  #{content.foto.comment}
+              p.pull-left #{moment(content.foto.created).format('lll')}
+              a.pull-right(href='/'+content.foto.url+'/') Read More
+  //-
+    .col-sm-4.col-xs-12.ms-item
+      .latest-news
+        h2.ribbon.flat4-color SOSOK 
+        ul
+          li
+            a.post-title(href='/'+content.sosok.url+'/')
+              .img-holder
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(content.sosok.image!=null?content.sosok.image.image:''),alt=content.sosok.alt)
+                h5= content.sosok.title
+            .excerpt
+              p #{content.sosok.limit}...
+            .meta-readmore
+              a.pull-left(href='/'+content.sosok.url+'/')
+                i.fa.fa-comments
+                |  #{content.sosok.comment}
+              p.pull-left #{moment(content.sosok.created).format('lll')}
+              a.pull-right(href='/'+content.sosok.url+'/') Read More
+  //-
+    .col-sm-4.col-xs-12.ms-item
+      .latest-news
+        h2.ribbon.flat5-color BORO 
+        ul
+          li
+            a.post-title(href='/'+content.boro.url+'/')
+              .img-holder
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(content.boro.image!=null?content.boro.image.image:''),alt=content.boro.alt)
+                h5= content.boro.title
+            .excerpt
+              p #{content.boro.limit}...
+            .meta-readmore
+              a.pull-left(href='/'+content.boro.url+'/')
+                i.fa.fa-comments
+                |  #{content.boro.comment}
+              p.pull-left #{moment(content.boro.created).format('lll')}
+              a.pull-right(href='/'+content.boro.url+'/') Read More
+  //-
+    .col-sm-4.col-xs-12.ms-item
+      .latest-news
+        h2.ribbon.flat6-color WISATA 
+        ul
+          li
+            a.post-title(href='/'+content.wisata.url+'/')
+              .img-holder
+                img.animate(src=req.protocol + '://' + req.get('host') +'/img/regular/'+(content.wisata.image!=null?content.wisata.image.image:''),alt=content.wisata.alt)
+                h5= content.wisata.title
+            .excerpt
+              p #{content.wisata.limit}...
+            .meta-readmore
+              a.pull-left(href='/'+content.wisata.url+'/')
+                i.fa.fa-comments
+                |  #{content.wisata.comment}
+              p.pull-left #{moment(content.wisata.created).format('lll')}
+              a.pull-right(href='/'+content.wisata.url+'/') Read More
+  
+  script.
+    $(window).load(function(){
+      slide();
+    });
+    $(window).resize(function() {
+      slide();
+    });
+    var $image=$('.carousel-inner img');
+    $image.imagesLoaded( function(){
+      slide();
+    });
+    function slide(){
+      var h=$image.height();
+      var hg=h!=0?h-50:0;
+      $('.coor-slide').css({top:hg});
+    }
+    var $container = $('#ms-containers');
+    $container.imagesLoaded( function(){
+        $container.masonry({
+            columnWidth: 1,
+            itemSelector: '.ms-item',
+            transitionDuration: 0
+        });
+    });
+    function goTo(url){
+      window.location = url;
+    }

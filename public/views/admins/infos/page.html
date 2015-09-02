@@ -1,0 +1,23 @@
+<section data-ng-controller="InfosAdminController" data-ng-init="find()">
+  <h1><a href="#!/admin/{{mode}}/create">Create One</a></h1>
+    <table class="table table-striped">
+        <thead>
+          <tr>        
+            <th>Info Name</th>
+            <th>action</th>
+          </tr>
+        </thead>
+    <tbody>
+        <tr data-ng-repeat="info in infosadmins   | orderBy:'-created'">
+          <td>{{info.title}}</td>
+          <td><a class="btn" href="#!/admin/{{mode}}/edit/{{info._id}}">
+        	<i class="fa fa-edit"></i>
+        </a>
+        <a class="btn" data-ng-click="remove(info._id,$index)">
+            <i class="fa fa-trash-o"></i>
+        </a>
+          </td>
+        </tr>      
+    </tbody>
+  </table>
+</section>
